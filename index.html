@@ -285,7 +285,7 @@ table.t.roomy td{padding:20px 16px}
   </svg>
   <p class="eyebrow a" style="--d:.05">Team 8 · Capstone · ML System Design &amp; LLMOps</p>
   <h1 class="a" data-a="blur" style="--d:.25">LLM <em>CostGuard</em></h1>
-  <p class="lead a" style="--d:.6;max-width:930px">A layer in front of a support bot’s LLM. It reuses safe answers, sends only the policy text that matters and picks the cheaper model when it is safe. Each answer costs less and stays correct.</p>
+  <p class="lead a" style="--d:.6;max-width:930px">A layer in front of a support bot’s LLM. It reuses safe answers, sends only the policy text that matters and picks the cheaper model when it is safe. Each answer costs less, with zero wrong answers on held-out.</p>
   <div class="row a" style="--d:.95;gap:12px;flex-wrap:wrap;max-width:960px">
     <span class="pill">Aarya</span><span class="pill">Aryan</span><span class="pill">Harsh</span><span class="pill">Prathmesh</span><span class="pill">Purvansh</span><span class="pill">Sarthak</span>
   </div>
@@ -568,7 +568,7 @@ table.t.roomy td{padding:20px 16px}
         <div class="row" style="gap:3px">
           <div class="hbar a" data-a="growx" style="--d:.4;width:176px;background:#cfc9bb"></div><div class="hbar a" data-a="growx" style="--d:.45;width:110px;background:#d9d4c7"></div><div class="hbar a" data-a="growx" style="--d:.5;width:92px;background:#cfc9bb"></div><div class="hbar a" data-a="growx" style="--d:.55;width:88px;background:#d9d4c7"></div><div class="hbar a" data-a="growx" style="--d:.6;width:84px;background:#cfc9bb"></div><div class="hbar a" data-a="growx" style="--d:.65;width:80px;background:#d9d4c7"></div><div class="hbar a" data-a="growx" style="--d:.7;width:76px;background:#cfc9bb"></div><div class="hbar a" data-a="growx" style="--d:.75;width:60px;background:#d9d4c7"></div>
         </div>
-        <p class="small" style="color:var(--body);margin-top:6px">after: <b class="num t-clay">833</b> = 800 of policy + the customer’s case (always kept)</p>
+        <p class="small" style="color:var(--body);margin-top:6px">after: <b class="num t-clay">833</b> = 789 of policy (budget 800) + 44 of the customer’s case (always kept)</p>
         <div class="row a" data-a="growx" style="--d:1.0"><div class="hbar" style="width:118px;background:var(--clay)"></div></div>
       </div>
       <ul style="display:flex;flex-direction:column;gap:6px;padding-left:26px">
@@ -860,7 +860,7 @@ table.t.roomy td{padding:20px 16px}
       <p class="to-x" style="font-size:30px">Free checks + Haiku judge</p>
       <p class="to-y" style="font-size:22px;margin-bottom:4px">over cosine similarity alone</p>
       <p class="big num" style="font-size:46px;letter-spacing:-1px;color:var(--clay-t)">43 → 1</p>
-      <p class="mono" style="font-size:20px;color:var(--dim);margin-bottom:6px">wrong answers on 49 traps</p>
+      <p class="mono" style="font-size:20px;color:var(--dim);margin-bottom:6px">wrong hits on 49 traps</p>
       <p class="to-z" style="font-size:21px">because traps score as high as paraphrases (0.958 vs 0.956).</p>
     </div>
     <div class="card to a" data-a="pop" style="--d:.42;gap:4px;padding:18px 28px 20px">
@@ -877,7 +877,7 @@ table.t.roomy td{padding:20px 16px}
       <p class="to-y" style="font-size:22px;margin-bottom:4px">over 1,200 tokens</p>
       <p class="big num" style="font-size:46px;letter-spacing:-1px;color:var(--clay-t)">+24%</p>
       <p class="mono" style="font-size:20px;color:var(--dim);margin-bottom:6px">cost per query at 1,200</p>
-      <p class="to-z" style="font-size:21px">because 1,200 buys only 1 more correct answer in 40.</p>
+      <p class="to-z" style="font-size:21px">because a held-out check found just 1 more correct answer in 40.</p>
     </div>
     <div class="card to a" data-a="pop" style="--d:.66;gap:4px;padding:18px 28px 20px">
       <p class="to-n">04 · we chose</p>
@@ -900,7 +900,7 @@ table.t.roomy td{padding:20px 16px}
     <tr><td style="padding:7px 14px">A hard question goes to the small model</td><td style="padding:7px 14px">router threshold 0.05 leans to Sonnet</td><td class="mono" style="padding:7px 14px;font-size:21px;color:var(--olive-t)">held-out: 0 of 29 to Haiku</td></tr>
   </table>
 
-  <aside class="notes"><p>Three constraints shaped every choice. A budget of 5 to 20 dollars, so we memoize every call; the whole project spent 5.30. A model call takes about 4.4 seconds, so cheap checks run first, and a miss adds only 24 milliseconds. And only 190 team-written queries, so we split by topic and keep the router cautious. Now four trade-offs. We chose free checks plus a Haiku judge over cosine alone, because traps score as high as paraphrases: wrong answers fell from 43 to 1 on 49 traps. We chose a context window over LLMLingua-2, because compression saved only 3 percent more, kept every fact in only half the queries, and cannot cut output, about half of a miss’s cost. We chose 800 tokens over 1,200, because 1,200 costs 24 percent more for one more correct answer in 40. We chose bge-small over MiniLM, because it serves 31 versus 20 of 36 paraphrases. Then the failure modes. A changed number, a flipped negation and a different customer case each went to zero wrong hits. An edited policy or prompt changes the key, so an old answer cannot match. The tenant is in every key and every vector search. And the router leans to Sonnet: on held-out, none of the 29 misses went to Haiku.</p></aside>
+  <aside class="notes"><p>Three constraints shaped every choice. A budget of 5 to 20 dollars, so we memoize every call; the whole project spent 5.30. A model call takes about 4.4 seconds, so cheap checks run first, and a miss adds only 24 milliseconds. And only 190 team-written queries, so we split by topic and keep the router cautious. Now four trade-offs. We chose free checks plus a Haiku judge over cosine alone, because traps score as high as paraphrases: wrong hits fell from 43 to 1 on 49 traps. We chose a context window over LLMLingua-2, because compression saved only 3 percent more, kept every fact in only half the queries, and cannot cut output, about half of a miss’s cost. We chose 800 tokens over 1,200, because 1,200 costs 24 percent more, and a held-out check found just one more correct answer in 40. We chose bge-small over MiniLM, because it serves 31 versus 20 of 36 paraphrases. Then the failure modes. A changed number, a flipped negation and a different customer case each went to zero wrong hits. An edited policy or prompt changes the key, so an old answer cannot match. The tenant is in every key and every vector search. And the router leans to Sonnet: on held-out, none of the 29 misses went to Haiku.</p></aside>
 </section>
 
 <!-- ===================== 24 CLOSE ===================== -->
