@@ -11,7 +11,6 @@ A browser slide deck for the LLM CostGuard capstone. It is one self-contained `i
 | → / Space | Next slide |
 | ← | Previous slide |
 | F | Full screen |
-| N | Speaker notes |
 | O | Slide overview |
 | T / R | Start the timer / reset it |
 | H | Help |
