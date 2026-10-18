@@ -924,22 +924,6 @@ table.t.roomy td{padding:20px 16px}
   <aside class="notes"><p>To sum up: 75.5% cheaper on held-out, zero wrong answers, and every offline number re-runs for free. Thank you. We are happy to take questions.</p></aside>
 </section>
 
-<!-- ===================== BACKUP 1 ===================== -->
-<section class="slide oat backup" data-presenter="Backup" data-title="Backup 1/2 · likely questions" style="gap:22px">
-  <p class="eyebrow a">Backup · Q&amp;A prep 1 / 2</p>
-  <h2 class="a" style="--d:.05;font-size:54px">Likely questions, with short honest answers</h2>
-  <div class="col" style="gap:0"><div class="qa-row a" style="--d:0.15"><p class="qa-q">Isn’t the full-context baseline a straw man?</p><p class="qa-a">Partly. 29 of 40 requests attach 8 policies and 34 need one. A retrieval baseline would shrink the window’s savings, not the cache’s 27.3 points.</p></div><div class="qa-row a" style="--d:0.25"><p class="qa-q">Why not Haiku 5.5 for everything?</p><p class="qa-a">≈ $0.0007 per query at config prices (estimate), a fifth of ours, but never graded. 15 of 40 held-out queries need the large model. Our strongest open question.</p></div><div class="qa-row a" style="--d:0.35"><p class="qa-q">Is the learned router better than simple rules?</p><p class="qa-a">Not yet: −14.5% cost with 8.5% complex leaks, vs rules −10.4% with 3.2%. It needs more labels or a per-category gate.</p></div><div class="qa-row a" style="--d:0.45"><p class="qa-q">Were the CI bounds set after seeing the results?</p><p class="qa-a">Yes. They are regression gates that lock in the measured level. The proof of quality is the held-out eval, not the gate.</p></div><div class="qa-row a" style="--d:0.55"><p class="qa-q">Sonnet answers, grades and judges. Is that biased?</p><p class="qa-a">Possibly; we have no human agreement figure yet. The bias touches both arms: all 29 held-out misses also used Sonnet. Next: two people grade blind (Cohen’s kappa).</p></div></div>
-  <aside class="notes"><p>Backup slide. Show it only if the question comes up.</p></aside>
-</section>
-
-<!-- ===================== BACKUP 2 ===================== -->
-<section class="slide oat backup" data-presenter="Backup" data-title="Backup 2/2 · likely questions" style="gap:22px">
-  <p class="eyebrow a">Backup · Q&amp;A prep 2 / 2</p>
-  <h2 class="a" style="--d:.05;font-size:54px">Likely questions, with short honest answers</h2>
-  <div class="col" style="gap:0"><div class="qa-row a" style="--d:0.15"><p class="qa-q">What breaks first at 10× traffic?</p><p class="qa-a">Not the caches: the shared 8-thread pool with shadow on, ≈ 1.8 shadowed requests/s per process (estimate). Fix: sample shadow, async calls, more workers; later HNSW instead of a FLAT index.</p></div><div class="qa-row a" style="--d:0.25"><p class="qa-q">Why is the cache judge Haiku 4.5, at 10× Haiku 5.5’s price?</p><p class="qa-a">Not compared yet. Judge spend is 0.9% of held-out cost, so accuracy matters more than price. Testing Haiku 5.5 is next.</p></div><div class="qa-row a" style="--d:0.35"><p class="qa-q">How is a bad cached answer removed?</p><p class="qa-a">Today: the 7-day TTL or a tenant purge. Reuse is limited to the same docs and case. Plan: evict on a shadow “worse” verdict.</p></div><div class="qa-row a" style="--d:0.45"><p class="qa-q">What was the most consequential design decision?</p><p class="qa-a">Making cache reuse depend on the request context (cached docs + case ⊆ request). Alone it cut wrong hits 43 → 21, and it shaped the key, invalidation and tenant isolation.</p></div><div class="qa-row a" style="--d:0.55"><p class="qa-q">Where do 50 ms and 300 req/s come from?</p><p class="qa-a">Our budgets: 50 ms ≈ 1% of a 4.4 s model call; 300 req/s so one process is not the bottleneck before the model API. Measured: 31.7 ms and 332 req/s, model mocked, shadow off.</p></div></div>
-  <aside class="notes"><p>Backup slide. Show it only if the question comes up.</p></aside>
-</section>
-
     <div id="hud"><span class="brand">LLM CostGuard · Team 8</span><span class="presenter" id="presenter"></span><span class="count" id="count"></span></div>
     <div id="progress"></div>
     <div id="timer">00:00 / 15:00</div>
